@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MarketPlace | Your One-Stop Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Add Three.js for the animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-surface": "#1a1c1c",
+                    "primary-fixed-dim": "#bbc7db",
+                    "surface-variant": "#e2e2e2",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#1f2f41",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#2c1600",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#0e1a28",
+                    "outline": "#75777c",
+                    "primary-fixed": "#d7e3f7",
+                    "inverse-primary": "#bbc7db",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#eeeeee",
+                    "secondary": "#8a5100",
+                    "on-tertiary-fixed-variant": "#38485b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#b7c8df",
+                    "tertiary": "#091a2b",
+                    "primary-container": "#232f3e",
+                    "surface": "#f9f9f9",
+                    "surface-dim": "#dadada",
+                    "on-surface-variant": "#44474c",
+                    "on-tertiary-container": "#8697ad",
+                    "on-tertiary-fixed": "#0b1d2e",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c5c6cc",
+                    "surface-bright": "#f9f9f9",
+                    "on-primary-fixed-variant": "#3c4858",
+                    "background": "#f9f9f9",
+                    "surface-container-low": "#f3f3f3",
+                    "inverse-surface": "#2f3131",
+                    "on-secondary-container": "#643900",
+                    "on-background": "#1a1c1c",
+                    "secondary-fixed-dim": "#ffb86f",
+                    "secondary-container": "#fe9800",
+                    "on-primary-fixed": "#101c2b",
+                    "tertiary-fixed": "#d3e4fc",
+                    "on-primary-container": "#8a97a9",
+                    "surface-container-high": "#e8e8e8",
+                    "secondary-fixed": "#ffdcbd",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#693c00",
+                    "surface-tint": "#535f70"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "gutter": "20px",
+                    "margin-desktop": "40px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "max-width": "1440px",
+                    "lg": "24px",
+                    "margin-mobile": "16px",
+                    "md": "16px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "price-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "price-lg": ["28px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f3f3; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .carousel-container { scroll-behavior: smooth; }
+        .hero-gradient { background: linear-gradient(135deg, rgba(14, 26, 40, 0.9) 0%, rgba(14, 26, 40, 0.4) 50%, rgba(243, 243, 243, 1) 100%); }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-primary shadow-md">
+<div class="flex items-center justify-between px-margin-mobile md:px-margin-desktop py-sm max-w-max-width mx-auto gap-lg">
+<!-- Brand Logo -->
+<a class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-primary whitespace-nowrap" href="#">Sundarban</a>
+<!-- Search Bar -->
+<div class="hidden md:flex flex-grow max-w-3xl items-center">
+<div class="relative w-full group">
+<input class="w-full h-10 pl-md pr-12 rounded bg-surface-container-lowest border-none focus:ring-2 focus:ring-secondary-container text-body-md" placeholder="Search MarketPlace" type="text"/>
+<button class="absolute right-0 top-0 h-10 w-12 bg-secondary-container hover:bg-secondary flex items-center justify-center rounded-r transition-colors">
+<span class="material-symbols-outlined text-primary-container">search</span>
+</button>
+</div>
+</div>
+<!-- Navigation Links & Actions -->
+<nav class="flex items-center gap-lg">
+<div class="hidden lg:flex items-center gap-md">
+<a class="text-secondary-fixed font-bold border-b-2 border-secondary-fixed pb-1 font-body-md text-body-md" href="#">Deals</a>
+<a class="text-on-primary hover:text-secondary-fixed transition-opacity font-body-md text-body-md" href="#">Grocery</a>
+<a class="text-on-primary hover:text-secondary-fixed transition-opacity font-body-md text-body-md" href="#">Best Sellers</a>
+<a class="text-on-primary hover:text-secondary-fixed transition-opacity font-body-md text-body-md" href="#">Service</a>
+</div>
+<div class="flex items-center gap-md text-on-primary">
+<div class="hidden sm:block cursor-pointer hover:opacity-90">
+<p class="text-[11px] leading-tight opacity-80">Hello, Sign in</p>
+<p class="font-bold text-body-sm">Account &amp; Lists</p>
+</div>
+<div class="hidden sm:block cursor-pointer hover:opacity-90">
+<p class="text-[11px] leading-tight opacity-80">Returns</p>
+<p class="font-bold text-body-sm">&amp; Orders</p>
+</div>
+<button class="flex items-center gap-xs relative active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[32px]">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary-container text-primary-container text-[10px] font-bold px-1.5 rounded-full">0</span>
+<span class="hidden md:block font-bold mt-2">Cart</span>
+</button>
+</div>
+</nav>
+</div>
+</header>
+<main class="mt-[64px]">
+<!-- Hero Slider -->
+<section class="relative h-[450px] md:h-[650px] overflow-hidden">
+<div class="absolute inset-0 w-full h-full">
+<img class="w-full h-full object-cover" data-alt="A sophisticated high-fashion background with neutral tones and metallic accents, suitable for a premium marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ7ZI1_2M5YnPTbN7TFzUaPMYSBfPgqds4oCuKdI-s6L1V2-SjBUl0zGF1zTt3S64HMbqoayoHBekQVqvyUTsHX11ToAWjGIK_0xZD2vxpkh2hylshQFdBvsp8SOuMEP_iqdrgaYxpJcOeu2RSRd0LX6Qdk9CIvaCTi5ngWV581XUu0SJj2JIIgJZHscIh8NTo66E3fX87u5kevVaou-UPMleT3fOiXH1mX39CX3s5D-Czw_tWyrn8ACY1LIaIOhPh1bfvgwHCIWA"/>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop h-full flex items-center pt-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 items-center gap-xl w-full">
+<!-- Left Side Text -->
+<div class="bg-white/80 backdrop-blur-md p-xl rounded shadow-2xl border border-white/20">
+<h1 class="font-headline-lg text-display-lg text-primary mb-sm leading-tight">Elevate Your Style</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-md">Explore our curated collection of premium fashion and cutting-edge electronics.</p>
+<button class="bg-secondary-container text-primary-container font-bold py-sm px-xl rounded-lg hover:bg-secondary transition-all active:scale-95 shadow-md">Shop the Sale</button>
+</div>
+<!-- Right Side Animation -->
+<div class="hidden md:block">
+<!-- STITCH_THREEJS_START:ANIMATION_7 class="w-full h-[400px] bg-transparent" -->
+<div class="w-full h-[400px] bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_7" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_7');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Geometry: A stylized, rotating abstract "fashion" object (a sleek, metallic ring/sculpture)
+const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 32);
+const material = new THREE.MeshPhongMaterial({
+    color: 0x232f3e, // Brand Primary
+    shininess: 100,
+    specular: 0xffffff
+});
+const sculpture = new THREE.Mesh(geometry, material);
+scene.add(sculpture);
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    sculpture.rotation.x += 0.01;
+    sculpture.rotation.y += 0.01;
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const newWidth = container.clientWidth || window.innerWidth;
+    const newHeight = container.clientHeight || window.innerHeight;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_7 -->
+</div>
+</div>
+</div>
+</section>
+<!-- Category Grid & Flash Deals Bento Section -->
+<section class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop -mt-32 md:-mt-48 relative z-20 pb-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Category Card 1 -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded flex flex-col shadow-sm">
+<h3 class="font-headline-md text-headline-md mb-md">Electronics</h3>
+<div class="grid grid-cols-2 gap-sm flex-grow">
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A close-up professional product shot of sleek noise-canceling headphones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLR1UpU0TnhU-uT6N2Vpto_FRN2dwWUxLSzdkAzCSIzMPwXGL-p4u5MKBRb2wT8ERLDqqrzhGK0ZPHD28KQLueQ-OCEi1NjplrUb9B49wGwNatHp27rTe0jSFihBH5VGCOCYNwUuIFYa_3ume4109bCQI7clYaTusgzDhKiiyV03x4u59udO4zzRrk2NrJf6hAVPVcfxA8VSGxcvXsnCjxdEVa7g1HLvzu3NW3IPvX1N3G-cOwdzUO4K1wif7xvvmFoQTeWlDuZH8"/>
+</div>
+<span class="text-body-sm font-label-md">Audio</span>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A high-end modern laptop sitting on a polished wooden desk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbZwDpErdxS3ve03-yWYdu3mckHHaVNOx2HdJMCme7G1M-hoNfpfEBDJsvUDKmKoqBwCwHaoSTDL5zVXUJMiH0_Q4C4N66xtAZg-IGs9ZeKzdsSMm1hbmwT8Ulym0oUM_pPxgofbxpL-wR0mHC-xWE2ooE73URelp35WP_ZbrfnQm6nDbmZZtL9sXsbl1uRmK_-Dxs99TJ1yAHpVXxsyBddrbYjGOzQdmpQWvAkv-EYZwj0TSvY6T8buj-quoRBwIq8UdW1CcY3Os"/>
+</div>
+<span class="text-body-sm font-label-md">Computers</span>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A collection of the latest mobile smartphones and smartwatches." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVQq9MomfZ1PPSZ4Is1g63qGRHFL4RXT_FmEZL1bUNiJIHK1b9FHP_AX-vIGrYC5NshpVpdqBBUNXaUq7fIB0YRN6ur_bLA35IkFqRLkBG7eZhK51YU5zfiCZzBUcsggswHxHvqz22_Ubdfdrp6LMrUul2Q2fcMsP67FZnO5dsdikptEQoBqCSAS6UG6UM2kS2ymJyOAsFs9hZDAzoA653bfA3fQ7TEqU3hzRg1iOdk_6TNUhJD0O2mbtyPjg056pnMj0WjmR1K2M"/>
+</div>
+<span class="text-body-sm font-label-md">Mobiles</span>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A professional photo of a modern high-resolution camera." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcN97LV3KRXPGLx5an0uvTmUvR73PtwKNgbSFxVaol60EKXBY3iV1WbOu87h4dnWbL_jswXLgqJbyYVgF2ORAojaxSSMQFaOS-1lj_NV4Cj4vW3tMvALa9KU8hfmpN_GQYyAeS1_trEQdYZYyLbhO1mPtV1Afy0qvJT_wjmviBRdRVOwYTYkYkcyeqB_BYSflVsG_qIx2EJrTirBe3ED9WMZfJEAKDrImc_GLkV_1Cj1FFFkrrflG350MmHkdiQ3AxdaocnnzT1xk"/>
+</div>
+<span class="text-body-sm font-label-md">Cameras</span>
+</div>
+</div>
+<a class="mt-md text-secondary font-label-md hover:underline" href="#">See more</a>
+</div>
+<!-- Flash Deals Card -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded flex flex-col shadow-sm">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md">Flash Deals</h3>
+<span class="bg-error text-on-error text-[10px] px-2 py-0.5 font-bold rounded animate-pulse">LIVE</span>
+</div>
+<div class="bg-surface-container rounded overflow-hidden relative group cursor-pointer mb-md">
+<img class="w-full h-48 object-cover" data-alt="A high-speed action shot of a gaming console and controller." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX8Am7clC09I9Ddw_tYmvcdYLoYcopBu8LcZSt-7t4DH0vvdWwjUzXek8HXeG0y5iGQ81ZMrO4VlXHUdQm3NGZ9IxkmrPFjIZZrldm9jP1MzldNgDopsnajCeLhMtJB70-96rDqgDnPuVoM4HHCd1HvQwWlvLkOa7jnw3FiCwIsVjbvxR-R54P6-MjkN-TwfVgArbFIOYF1AmhGUBXrw6UsfmgRAHU7LYuse1wrQ9IfkhrHqwmL_fMC0oeQT22m2bMtJCy10jifz4"/>
+<div class="absolute bottom-0 left-0 right-0 bg-primary/80 text-on-primary p-sm backdrop-blur-sm">
+<p class="font-bold text-body-sm">Pro Gamer Bundle</p>
+<div class="flex items-center justify-between">
+<span class="text-secondary-fixed-dim font-price-lg text-[20px]">$299.99</span>
+<span class="line-through text-on-surface-variant text-body-sm opacity-60">$450.00</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="text-body-sm font-medium">Ends in:</p>
+<div class="flex gap-sm">
+<div class="bg-primary text-on-primary px-sm py-1 rounded font-bold text-headline-md">02</div>
+<div class="text-primary font-bold text-headline-md">:</div>
+<div class="bg-primary text-on-primary px-sm py-1 rounded font-bold text-headline-md">45</div>
+<div class="text-primary font-bold text-headline-md">:</div>
+<div class="bg-primary text-on-primary px-sm py-1 rounded font-bold text-headline-md">12</div>
+</div>
+</div>
+</div>
+<!-- Category Card 2: Fashion -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded flex flex-col shadow-sm">
+<h3 class="font-headline-md text-headline-md mb-md">Fashion Trends</h3>
+<div class="bg-surface-container rounded overflow-hidden h-64 mb-md">
+<img class="w-full h-full object-cover" data-alt="A high-fashion lifestyle photograph of a group of diverse models." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ7ZI1_2M5YnPTbN7TFzUaPMYSBfPgqds4oCuKdI-s6L1V2-SjBUl0zGF1zTt3S64HMbqoayoHBekQVqvyUTsHX11ToAWjGIK_0xZD2vxpkh2hylshQFdBvsp8SOuMEP_iqdrgaYxpJcOeu2RSRd0LX6Qdk9CIvaCTi5ngWV581XUu0SJj2JIIgJZHscIh8NTo66E3fX87u5kevVaou-UPMleT3fOiXH1mX39CX3s5D-Czw_tWyrn8ACY1LIaIOhPh1bfvgwHCIWA"/>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<button class="bg-surface-container hover:bg-surface-container-high p-sm text-body-sm font-label-md rounded">Men's</button>
+<button class="bg-surface-container hover:bg-surface-container-high p-sm text-body-sm font-label-md rounded">Women's</button>
+</div>
+<a class="mt-md text-secondary font-label-md hover:underline" href="#">Explore all</a>
+</div>
+<!-- Category Card 3: Home & Kitchen -->
+<div class="bg-surface-container-lowest p-md border border-outline-variant rounded flex flex-col shadow-sm">
+<h3 class="font-headline-md text-headline-md mb-md">Home &amp; Kitchen</h3>
+<div class="grid grid-cols-2 gap-sm flex-grow">
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A modern designer espresso machine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpre7bS7QQOgAwvs4lsmnyDUC-Ik7mAEaBkiR8r_yJZx282dwfvTotA1R7Q1DaSx3L8WZLVPNdE_rXOaTXS9bnZ6XUe4uX-bqbLUmcUO2Y2Wq18A-SZLc5XqMDBbgjvSaBf0R_qX1pkChQZpyKsh_e9y-Nafh9r-vUeR9hz29LBO859hMRvSZEXL6420c3eCAqINbfYM-KN8oQtFYm66PIJacLrL2TCeVYSNfaJ6w6B3oQUXp9jXwSLxONBtr2hoN9w6c8Cje4HHw"/>
+</div>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A beautifully arranged set of ceramic plates." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYe2yDN73QrazjNWh4-KJrIR6W_K3EF9LawChl7wGlzYWz3r0jMWJhhXB-3JU2MDK3HKi-mj9IkBrZlUxBNLgPlKNdc4vEWNccftlAqhv2QQVC3rbZVcGEoE8zaEpVraEBIkBC9f2oN2m-fwlhQYsgOFLZesjx3kiETkQN6EkZtAd_pwhRXvlofmiHtdcmemnwKDewR1-UQRxTN-F2d6gHHT0vTDwUTjK6XSRzEghT3UQp3HsTx8oyXGjpef2eNFGw7WdkVY3nYTw"/>
+</div>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A set of high-performance modern cookware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoOeCGAeHa9S-qVurukgmrM1-6xUhLjN2OkOiG1ou0C671VguHyBMCdTNYZViwXwM52OjiatVR7NJpTz-V6Ia7NjlM_vQJMI-d0Sxmcnmz5WSPZ8E5Nv7wJrvnN4W9LOPlgJxku0obUWLWR4ZyZmL1Qp6fOR_mmA0tgoJnKiNuBEvUqVUTci1prLIvN3LLUlMDy5ARBakHK1NUTlIcYrhfDhQjVCrTB9jCx8x6Q6z7LyDvO7pG5kK_xmH2dO4BUsZJwarnnfDZOIY"/>
+</div>
+</div>
+<div class="cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded mb-xs overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A comfortable, modern sofa." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrQehJvPW69FJ2czCJYPPvTfDCaVo4HxlWi4g2vepLFoy22KooCH0MDGZyvVgeO2MjiJuOuKEy660FqDJJiSIdmMXcu9QlLmUdmKfawFHZSeU3Jhd97aWx7TdjwHC2DCI_U4HE8fZcvHYoEHFo_DsI12L05kAxbpq1-LTxah93TLAdTwwGecSCiUbhkEw5WyYEMyorhFvx67WWtd3EGmuDok4872HyFHir2ZhOIUFfF7WlRDycdSRGsPK4X7xLwXbE7lLq5n5Ko-M"/>
+</div>
+</div>
+</div>
+<a class="mt-md text-secondary font-label-md hover:underline" href="#">Shop now</a>
+</div>
+</div>
+</section>
+<!-- Featured Products -->
+<section class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Featured Deals</h2>
+<p class="text-on-surface-variant font-body-md">Handpicked for your style and needs</p>
+</div>
+<a class="text-secondary font-label-md hover:underline hidden sm:block" href="#">View all recommendations</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-gutter">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative aspect-square mb-sm overflow-hidden">
+<img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" data-alt="A studio product shot of a premium silver smartwatch." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8PIexC1TAKerCiLEDy4cqPNWrsuZUzUnxuHXTg6e88qSCu3nnI_3Jk0foHyG1x03j7c_-3IaX96A1uKtTJseqwa0cofXGKWmNsfTgNFwvrQ7WjloCtDsNqXlurib9lhnxKOBNYxDlii5hJu8dkQjNUoAh97-6R5WV4Jn0RmWq6leZgm1zVAO9svJi6UD1M4FreQ-Yk2pOGk1pnL5VPmzBaKmGg5jrmimnwoe2qzx5FvUUyhB1nU8eAoKjwC257cN8aFSlj4ibTew"/>
+<span class="absolute top-2 left-2 bg-secondary-container text-primary-container text-[10px] px-2 py-1 font-bold rounded shadow-sm">BEST SELLER</span>
+</div>
+<h4 class="font-body-sm line-clamp-2 mb-xs group-hover:text-secondary transition-colors">Elite Series Smartwatch with Heart Rate Monitor and GPS</h4>
+<div class="flex items-center gap-xs mb-xs">
+<div class="flex text-[#FF9900]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_half</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">(1,240)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-xs">
+<span class="font-price-lg text-[22px] text-primary">$199.00</span>
+<span class="text-body-sm line-through text-on-surface-variant opacity-60">$249.00</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-md">Get it by Tomorrow</p>
+<button class="w-full bg-secondary-container hover:bg-secondary text-primary-container font-bold py-1.5 rounded-full text-body-sm transition-colors active:scale-95">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative aspect-square mb-sm overflow-hidden">
+<img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" data-alt="Professional studio shot of a sleek white robotic vacuum cleaner." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwSOiIOedWsrJCgnLutmremOuzpbTgJvoB-J7fQ32diNb-slJB0JnmzEVVoIfbDhLGJEsCCL8MgluPhDFX5UnbHGuwlu3WVBfmOFhtCpRq39G8KfZRAtO-p_RawgDwAmWCGCxh162TyFEJzafafszwRVzSfFzOaOnz7B6wLbiALNcYO_ylaKuzPdK7Zn90z5aYdOlLqA2Xew28759tm0ilR00BAgxR3DybqxBt8sEpeyRgrAQdiWODUtSBEhQyWIKgqQiW1N8Mxqs"/>
+<span class="absolute top-2 left-2 bg-error text-on-error text-[10px] px-2 py-1 font-bold rounded shadow-sm">15% OFF</span>
+</div>
+<h4 class="font-body-sm line-clamp-2 mb-xs group-hover:text-secondary transition-colors">SmartClean Pro - AI Powered Robotic Vacuum with Mop</h4>
+<div class="flex items-center gap-xs mb-xs">
+<div class="flex text-[#FF9900]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">(4,892)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-xs">
+<span class="font-price-lg text-[22px] text-primary">$349.99</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-md">Prime FREE Delivery</p>
+<button class="w-full bg-secondary-container hover:bg-secondary text-primary-container font-bold py-1.5 rounded-full text-body-sm transition-colors active:scale-95">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative aspect-square mb-sm overflow-hidden">
+<img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" data-alt="A professional studio product shot of a high-end DSLR camera." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu-nKT2MX3egWuH8d-qQiD03YnkvZa7app4WeoqrYQqbYAjFuVn7P8P10rhnOFqUFII-VKkyKUbXCYJ2d4wA_SwJt9-KhxjBmZRhpPnS8q_XrSVbN2RWKkDSsL2zq6cMidEtQ51aO_1ehZFkJeQXfgqBP7xLg7O0JFJAdpXirIdYrqgaPCXVod6UGcyRHPkKXP1xWz_Ah7_adOCMjSYAkfei8AB04jGrjGYztf0lM-KxiUw-z_odMYanDTU4aTOD0Jf2kIZBSl44g"/>
+</div>
+<h4 class="font-body-sm line-clamp-2 mb-xs group-hover:text-secondary transition-colors">ProShot X-50 Mirrorless Camera with 18-55mm Lens Kit</h4>
+<div class="flex items-center gap-xs mb-xs">
+<div class="flex text-[#FF9900]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_outline</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">(856)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-xs">
+<span class="font-price-lg text-[22px] text-primary">$899.00</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-md">Ships within 2 days</p>
+<button class="w-full bg-secondary-container hover:bg-secondary text-primary-container font-bold py-1.5 rounded-full text-body-sm transition-colors active:scale-95">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative aspect-square mb-sm overflow-hidden">
+<img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" data-alt="A high-quality lifestyle shot of a modern leather messenger bag." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_TdARuDUIPJfTui8J0RajGbWCLg7RBhVCrx83maXtQDH4l_80Z6waxp8D03gLkH2-xv0C8VnzUsMQVAvge919qtKxGI7RXBXbk38RzAwYARTQJfzF2S913CC5uzNK4VI2f8nx7lD4L9bacMJKLbDjL7AfGyUsLDqFfCub0ZaQBB0mWb35sqzYM-XR_h5sb424GjJGXajYxft-VTwe513m4QA7sG45huSpHEMk6MomX1Sv1KeXYzqc-UGQGtEWBQaYycDRuBgxgBE"/>
+<span class="absolute top-2 left-2 bg-secondary-container text-primary-container text-[10px] px-2 py-1 font-bold rounded shadow-sm">NEW ARRIVAL</span>
+</div>
+<h4 class="font-body-sm line-clamp-2 mb-xs group-hover:text-secondary transition-colors">Heritage Leather Briefcase - Handcrafted Full Grain Leather</h4>
+<div class="flex items-center gap-xs mb-xs">
+<div class="flex text-[#FF9900]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">(215)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-xs">
+<span class="font-price-lg text-[22px] text-primary">$145.00</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-md">FREE International Shipping</p>
+<button class="w-full bg-secondary-container hover:bg-secondary text-primary-container font-bold py-1.5 rounded-full text-body-sm transition-colors active:scale-95">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col group hover:shadow-lg transition-shadow">
+<div class="relative aspect-square mb-sm overflow-hidden">
+<img class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" data-alt="A sleek, modern kitchen blender." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnzqU-INnQTbjzb29Jnf86x8fI-T2iRaF2Chv0xkZnE8L0-wYmfu9jnX15BqH-2MHsfrhyELapCxZz5WV9K_obNaHr8E9Hv_waXaeRe8vBv6u3TSG1yo3ckg3HRuWh0rZes7bSeof32Wv4gCAFN-bIKe6TVJXbeF4bGtaxDlhWM3fRb9tgXEJx2In2KAWdeHBpRxF1LursUrrEYFLcpYhZ1wYcs7p4QZWKBU7-lJ2KOqb80fdelIk2EqnFucYNHQtvBKSsvw_m4Ic"/>
+</div>
+<h4 class="font-body-sm line-clamp-2 mb-xs group-hover:text-secondary transition-colors">TurboBlend 3000 - High Performance Smoothie Station</h4>
+<div class="flex items-center gap-xs mb-xs">
+<div class="flex text-[#FF9900]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_half</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">(3,201)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-xs">
+<span class="font-price-lg text-[22px] text-primary">$129.99</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mb-md">Today 2pm-6pm delivery</p>
+<button class="w-full bg-secondary-container hover:bg-secondary text-primary-container font-bold py-1.5 rounded-full text-body-sm transition-colors active:scale-95">Add to Cart</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Best Sellers Carousel -->
+<section class="bg-surface-container-low py-xl">
+<div class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary">Trending Best Sellers</h2>
+<div class="flex gap-sm">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-white transition-colors" id="prevBtn">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-white transition-colors" id="nextBtn">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-gutter overflow-x-auto hide-scrollbar carousel-container pb-sm" id="carousel">
+<!-- Carousel Items -->
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="White sneakers product photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNy43rf7fAYz3ebizruQiyFAF7mDk73i3s8IGBqzTJLdrionMI0qtQoxJa1Q6WhKbT9_jch3QPH3oxQBl9hqw0EygLHvRBosxttjFjzuuYsMOaGOuZNjwMQjE6ifyOgHTq8fIYsYskF77dMEyiN-yYfgQbQ56clPF69uiDC6GKLhAI8wJrum5fYBJyga_f_cMEIrTZl9r_O5u7sX5Y-p8meU9fFwgH8WDwoofzMbdj4ea4V1x24FuOKMMCDX5p0sRgFc5ZV_n7RqM"/>
+<p class="text-body-sm font-label-md truncate">Men's Casual Sneakers</p>
+<p class="text-secondary font-bold">$59.00</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Electric toothbrush product photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi8Ochum4w-f4zrX8OX8xSLXFwYsqjBew_FtlaJDsd8aE7rJYeiWfzrDIIFI8-Bm9CDsSOOwS2YY8nX9fNMP96yVPVpUaVgg7i0KRg_9qhS9Rlcn-KkyKTfPJBLwyYeKiUhP6L70fjf5p-eudu4BDG_IizcATSpCZpDUZX-OQ3C4Hkp3LznlQCuMkgzCkZZYQtJKafVPzQh_Urc8Yz_zMFe8jrdbiNk79DRMhMwMmTGOSIFmvBkTLKDt9bPQxUTgLvyJnQUCrqzL4"/>
+<p class="text-body-sm font-label-md truncate">Sonic Power Brush</p>
+<p class="text-secondary font-bold">$89.99</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Yoga mat and water bottle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtMQTbCOI4xyYSdedIrTjw7GBBveVBbpFb_UJ5DqwuyPu6eu7Xiipw6mm9rkY1o7JJsAYqB-LxZYbWnVDTBF2BUi3LwS43Qk6eBPr0to9M-wh5GWXIAOT_bz4p4wNxyX0ZkxlLa6NYoOxBLGjQRG1eBRWlN0tRLJly-Lrb10R1IsyGGMhdyCDyEXe374WYTXF-sQocA-kvkKRwdFgAGridrMg-sypPudJSdiFe9VbeGUxV8pocUjonWOt4m_ir6pdzAnZF7N3BwOo"/>
+<p class="text-body-sm font-label-md truncate">Eco-Friendly Yoga Set</p>
+<p class="text-secondary font-bold">$45.00</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Premium perfume bottle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxgItai4IQS4--LnF6y2o_RPCxHnI8wJK3AX9F1DylDHIv0i3ToIqlRjuFXX-VqK1iGQjv93Y1Nf0tuZ-Q1C9iNnYPesYqn11xXhr4de9tqiJ53Sm4cUQtvVOY7Q5VhTPiwAY81rZ8eBhxT-a-P8F3rOWxA4mbp45lAMiyxI5y9Rh5yKcknUq6I1ypLrK7pKWMcReCgsLHvRiTHXrA5bksZSbXjqlxn39oQLaYFlLPOW-HjSDFKQQ0yd2JkeCYooD1SYQG2ZVN3-w"/>
+<p class="text-body-sm font-label-md truncate">Premium Eau de Parfum</p>
+<p class="text-secondary font-bold">$120.00</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Tablet and stylus product photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC4UsJET8qEDg3H3OHP_DVDTAdiNCqVpUTQ1otabqwKkhkIyBSQtVjdFuW_E7VcItnpk2qVgnTLGIsNqhOTqkUu-BBgHbb3cgjzx-Tm8Thf6IL2pNziTL3STrW6cGTyyFYXrxcRsJ-mD3CuflNycQdXLxbyCJ0GGSQoO_UUGPwtSkhcsqxLI3HQoVhHVyEPj-qnzzjyRQ3QFI3cm1DNqL1YiyCSvRP-0cIUcaLsSomnpA0HdvAmZG7YD9Hs5kNyt-7SbT5ROiQ2dY"/>
+<p class="text-body-sm font-label-md truncate">Pro Pad 11 Ultra</p>
+<p class="text-secondary font-bold">$649.00</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Compact coffee grinder." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgeCjZdfNGPCHk6EW-Q9dQQsX-aU9oDYswvSYawPsW551jFSC3ot6b120leXRbbfOSqwoTSBCBIzs-Nt0KhLbGaVQMCnaJkxcxWcPzTsBHx8gmMA_KBF0HAttptV32OwVMf8KNr60euIlJSsN0iUrVGbFddEMAKR1__m5FxkAyb98IezuLvVg4HbgjpLS1d6aqV0PbCP_DTP6JPuJKTMMbwmi5UV_dGvj5exxrpf_gLsmBb8OfEEtTLMJn3ZBVS96g_WBipFcZLzw"/>
+<p class="text-body-sm font-label-md truncate">Precision Burr Grinder</p>
+<p class="text-secondary font-bold">$74.99</p>
+</div>
+<div class="flex-none w-[200px] bg-white p-md rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<img class="w-full h-32 object-contain mb-sm" data-alt="Wireless earbuds product photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvvdvHsNaE1Kmo2HB02D2JvqSEoImPduvxmo47Qjooj2ve9E8DInhZOok-GZdPguUPMe6CX4lXpRfOdC0klMqOuW8jxc8U_L2rgSpS5fFj6h95o-Kn8IEkxTUVcvyUizxiajw6-FEYioZxYmD4xOJhcp2LMdkeUC6ZiTh1hz2P0ipEN4vEtLcYfkinPfn10aeVlFIlPVk_OVmxvFfXNBPos85i2A6-pA1EsQPda5Lo5j1VjP3B0Yv8aFhSHMDausHxQfCI0EPIYbE"/>
+<p class="text-body-sm font-label-md truncate">AirFlow Wireless Buds</p>
+<p class="text-secondary font-bold">$159.00</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<h2 class="font-headline-md text-headline-md text-primary text-center mb-xl">What Our Customers Are Saying</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col gap-sm">
+<div class="flex text-[#FF9900] mb-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-body-md italic text-on-surface-variant">"Incredible service! I ordered my laptop in the morning and it was at my doorstep by 7 PM. The packaging was secure and the price was the best I found online."</p>
+<div class="flex items-center gap-sm mt-md">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="James Wilson headshot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA31V9SZ0tIl39H7czd7fRnTNdL4AtetqujmtRW-_4uS2ef4NxKCL_DU3ckaXZA0h0x6EJPYpvuiW8Aay76I6YdN_BlsiQRp_ANFslwh9bY7Gl-4S96g7_LPqrt4R62EH60zOpKExUIipTaexJ6NKCurejnd3MwRYiRscNSFpB-jITl_tCtnpfpTxz-dZr1M76-aimdqtNh2z4jMp8UviIj3aNnrQIxFZwAEgd8K891k2nNfSedDV-pQ3rToXq8Th_Z4TwZBvkXhKQ"/>
+</div>
+<div>
+<p class="font-label-md text-primary">James Wilson</p>
+<p class="text-[12px] text-on-surface-variant">Verified Buyer</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col gap-sm">
+<div class="flex text-[#FF9900] mb-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-body-md italic text-on-surface-variant">"MarketPlace has become my go-to for grocery and tech. Their customer support team resolved a small issue I had with a coupon in minutes. Highly recommend!"</p>
+<div class="flex items-center gap-sm mt-md">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Sarah Chen headshot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhvvKoqyZHwfhRdEwchhUHwtANBohn8heZgE3oGGmWsrgKahzUQvXSfog5hQdTw3EYWdUQEqcQs-SLDPd-8EOBEXcmKfJ84q1UCAGkGHrEvV8h8u4pzAYOLkB1AKou0cknp4CAhFxFwxeeFentem20Ue9EyyALsp51pl6J3-TKw3a_c7VGJehaEdHDSON8_ub12r3lk57Nsgw2ARwLxuOfL57TbBPRzi8AIId0YiziTVtDJkHvFzwIjbAFaCa886GiVxJL6smpj1I"/>
+</div>
+<div>
+<p class="font-label-md text-primary">Sarah Chen</p>
+<p class="text-[12px] text-on-surface-variant">Prime Member</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex flex-col gap-sm">
+<div class="flex text-[#FF9900] mb-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_half</span>
+</div>
+<p class="text-body-md italic text-on-surface-variant">"Great variety and easy navigation. I love how the recommendations actually fit what I'm looking for. Returning an item was seamless and free."</p>
+<div class="flex items-center gap-sm mt-md">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Robert Miller headshot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk7u9688m4iMihwpvNJtFb7vONDWBRup_OROq-tlSE_Qh5aLljsNt2gTZXAB3PJP7vRI-fD3hUq9bJAfuC7-RMjrqL90BcpoyOw6SV3OIR1CTSNlzFlA0TZ2j0cmf2WJ5BX89ATlLURI7CeQYCmdFCtfDkpKCj0lroRKQwXxvl2y48PEFu1_hUccILH4EVCY61bQOsXOh8uHFeE6otwXA9baVhGTHxjooIbE2lEwv9e9ub-GUhA9WMtPOFyoDVXmBabgTApInLsWw"/>
+</div>
+<div>
+<p class="font-label-md text-primary">Robert Miller</p>
+<p class="text-[12px] text-on-surface-variant">Verified Buyer</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Bar -->
+<section class="border-t border-outline-variant bg-white py-xl">
+<div class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-lg">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[40px] text-secondary">local_shipping</span>
+<div>
+<p class="font-bold text-body-md">Fast Delivery</p>
+<p class="text-body-sm text-on-surface-variant">Free for orders over $35</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[40px] text-secondary">assignment_return</span>
+<div>
+<p class="font-bold text-body-md">30-Day Returns</p>
+<p class="text-body-sm text-on-surface-variant">Easy and hassle-free returns</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[40px] text-secondary">verified_user</span>
+<div>
+<p class="font-bold text-body-md">Secure Payment</p>
+<p class="text-body-sm text-on-surface-variant">100% secure checkout process</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[40px] text-secondary">support_agent</span>
+<div>
+<p class="font-bold text-body-md">24/7 Support</p>
+<p class="text-body-sm text-on-surface-variant">Always here to help you</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter -->
+<section class="bg-primary-container text-on-primary py-xl">
+<div class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-xl">
+<div class="text-center md:text-left">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold mb-xs">Join Our Newsletter</h2>
+<p class="text-on-primary-container font-body-md">Get the latest deals and coupons delivered to your inbox.</p>
+</div>
+<form class="w-full max-w-md flex gap-sm" onsubmit="event.preventDefault(); alert('Subscribed!')">
+<input class="flex-grow rounded bg-white text-primary px-md py-sm border-none focus:ring-2 focus:ring-secondary-container" placeholder="Enter your email" required="" type="email"/>
+<button class="bg-secondary-container text-primary-container font-bold px-xl py-sm rounded hover:bg-secondary transition-colors whitespace-nowrap" type="submit">Subscribe Now</button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full mt-xl bg-primary-container border-t border-outline-variant">
+<div class="flex flex-col items-center py-xl px-margin-mobile md:px-margin-desktop gap-lg max-w-max-width mx-auto">
+<div class="w-full grid grid-cols-2 md:grid-cols-4 gap-xl mb-lg">
+<div class="flex flex-col gap-sm">
+<p class="font-bold text-on-primary mb-xs">Get to Know Us</p>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">About MarketPlace</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Careers</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Press Releases</a>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="font-bold text-on-primary mb-xs">Make Money with Us</p>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Sell on MarketPlace</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Supply to MarketPlace</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Affiliate Program</a>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="font-bold text-on-primary mb-xs">Payment Products</p>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Business Card</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Shop with Points</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Currency Converter</a>
+</div>
+<div class="flex flex-col gap-sm">
+<p class="font-bold text-on-primary mb-xs">Let Us Help You</p>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Your Account</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Your Orders</a>
+<a class="text-on-primary-container hover:underline text-body-sm" href="#">Help Center</a>
+</div>
+</div>
+<div class="flex flex-col items-center gap-md border-t border-on-primary/10 w-full pt-xl">
+<a class="font-headline-md text-headline-md font-black text-on-primary-container tracking-tight" href="#">Sundarban</a>
+<div class="flex gap-lg flex-wrap justify-center">
+<a class="text-on-primary-container hover:underline font-body-sm" href="#">Conditions of Use</a>
+<a class="text-on-primary-container hover:underline font-body-sm" href="#">Privacy Notice</a>
+<a class="text-on-primary-container hover:underline font-body-sm" href="#">Your Ads Privacy Choices</a>
+</div>
+<p class="text-on-primary-container text-body-sm opacity-60">© 2024 Sundarban, Inc. or its affiliates</p>
+</div>
+</div>
+</footer>
+<!-- FAB -->
+<button class="fixed bottom-margin-mobile right-margin-mobile bg-secondary-container text-primary-container p-lg rounded-full shadow-lg hover:shadow-xl transition-all active:scale-90 z-40 hidden md:flex items-center gap-sm">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-bold">Chat Support</span>
+</button>
+<script>
+        // Web Component for Three.js scene
+        class ThreeJsScene extends HTMLElement {
+            connectedCallback() {
+                const container = this;
+                const src = this.getAttribute('src');
+                if (src) {
+                    // Extract the content of the data placeholder. 
+                    // In a real environment, the system replaces {{DATA:ANIMATION:ID}} with the actual script content.
+                    // For the sake of this implementation, we assume the script is executable as provided in the instructions.
+                    try {
+                        const script = `
+                            (function(container) {
+                                ${src.replace(/<!-- STITCH_THREEJS_START:ANIMATION_7 class="" -->
+<div class="" style="display:block;width:100%;height:100%;min-height:200px;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_7" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_7');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Geometry: A stylized, rotating abstract "fashion" object (a sleek, metallic ring/sculpture)
+const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 32);
+const material = new THREE.MeshPhongMaterial({
+    color: 0x232f3e, // Brand Primary
+    shininess: 100,
+    specular: 0xffffff
+});
+const sculpture = new THREE.Mesh(geometry, material);
+scene.add(sculpture);
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    sculpture.rotation.x += 0.01;
+    sculpture.rotation.y += 0.01;
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const newWidth = container.clientWidth || window.innerWidth;
+    const newHeight = container.clientHeight || window.innerHeight;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_7 -->/, `
+                                    const width = container.clientWidth || 600;
+                                    const height = container.clientHeight || 400;
+
+                                    const scene = new THREE.Scene();
+                                    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+                                    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+                                    renderer.setSize(width, height);
+                                    renderer.setPixelRatio(window.devicePixelRatio);
+                                    container.appendChild(renderer.domElement);
+
+                                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+                                    scene.add(ambientLight);
+
+                                    const pointLight = new THREE.PointLight(0xffffff, 1);
+                                    pointLight.position.set(5, 5, 5);
+                                    scene.add(pointLight);
+
+                                    const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 32);
+                                    const material = new THREE.MeshPhongMaterial({
+                                        color: 0x232f3e,
+                                        shininess: 100,
+                                        specular: 0xffffff
+                                    });
+                                    const sculpture = new THREE.Mesh(geometry, material);
+                                    scene.add(sculpture);
+
+                                    camera.position.z = 5;
+
+                                    function animate() {
+                                        requestAnimationFrame(animate);
+                                        sculpture.rotation.x += 0.01;
+                                        sculpture.rotation.y += 0.01;
+                                        renderer.render(scene, camera);
+                                    }
+
+                                    window.addEventListener('resize', () => {
+                                        const newWidth = container.clientWidth;
+                                        const newHeight = container.clientHeight;
+                                        if(!newWidth || !newHeight) return;
+                                        camera.aspect = newWidth / newHeight;
+                                        camera.updateProjectionMatrix();
+                                        renderer.setSize(newWidth, newHeight);
+                                    });
+
+                                    animate();
+                                `)}
+                            })(container);
+                        `;
+                        // Note: The above is a structural wrapper. In the final system, the placeholder is resolved directly.
+                        // Here we mimic the execution of <!-- STITCH_THREEJS_START:ANIMATION_7 class="" -->
+<div class="" style="display:block;width:100%;height:100%;min-height:200px;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_7" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_7');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Geometry: A stylized, rotating abstract "fashion" object (a sleek, metallic ring/sculpture)
+const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 32);
+const material = new THREE.MeshPhongMaterial({
+    color: 0x232f3e, // Brand Primary
+    shininess: 100,
+    specular: 0xffffff
+});
+const sculpture = new THREE.Mesh(geometry, material);
+scene.add(sculpture);
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    sculpture.rotation.x += 0.01;
+    sculpture.rotation.y += 0.01;
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const newWidth = container.clientWidth || window.innerWidth;
+    const newHeight = container.clientHeight || window.innerHeight;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_7 --> script content.
+                        const animationFn = new Function('container', `
+                            const width = container.clientWidth || 600;
+                            const height = container.clientHeight || 400;
+
+                            const scene = new THREE.Scene();
+                            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+                            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+                            renderer.setSize(width, height);
+                            renderer.setPixelRatio(window.devicePixelRatio);
+                            container.appendChild(renderer.domElement);
+
+                            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+                            scene.add(ambientLight);
+
+                            const pointLight = new THREE.PointLight(0xffffff, 1);
+                            pointLight.position.set(5, 5, 5);
+                            scene.add(pointLight);
+
+                            const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 32);
+                            const material = new THREE.MeshPhongMaterial({
+                                color: 0x232f3e,
+                                shininess: 100,
+                                specular: 0xffffff
+                            });
+                            const sculpture = new THREE.Mesh(geometry, material);
+                            scene.add(sculpture);
+
+                            camera.position.z = 5;
+
+                            function animate() {
+                                requestAnimationFrame(animate);
+                                sculpture.rotation.x += 0.01;
+                                sculpture.rotation.y += 0.01;
+                                renderer.render(scene, camera);
+                            }
+
+                            window.addEventListener('resize', () => {
+                                const newWidth = container.clientWidth;
+                                const newHeight = container.clientHeight;
+                                if(!newWidth || !newHeight) return;
+                                camera.aspect = newWidth / newHeight;
+                                camera.updateProjectionMatrix();
+                                renderer.setSize(newWidth, newHeight);
+                            });
+
+                            animate();
+                        `);
+                        animationFn(container);
+                    } catch (e) {
+                        console.error('Animation load failed', e);
+                    }
+                }
+            }
+        }
+        customElements.define('threejs-scene', ThreeJsScene);
+
+        // Micro-interaction for Carousel
+        const carousel = document.getElementById('carousel');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        if (nextBtn && prevBtn && carousel) {
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollLeft += 400;
+            });
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollLeft -= 400;
+            });
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-lg');
+            } else {
+                header.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body></html>
